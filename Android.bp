@@ -1,0 +1,44 @@
+// libplist for Android: the C library only (no C++ bindings, Cython or tools).
+// UxPlay needs it to parse and build the binary plists AirPlay exchanges, and
+// AOSP does not ship it.
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+cc_library_static {
+    name: "libplist-2.0",
+    vendor_available: false,
+    srcs: [
+        "src/base64.c",
+        "src/bytearray.c",
+        "src/hashtable.c",
+        "src/ptrarray.c",
+        "src/time64.c",
+        "src/xplist.c",
+        "src/bplist.c",
+        "src/jsmn.c",
+        "src/jplist.c",
+        "src/oplist.c",
+        "src/out-default.c",
+        "src/out-plutil.c",
+        "src/out-limd.c",
+        "src/plist.c",
+        "libcnary/node.c",
+        "libcnary/node_list.c",
+    ],
+    local_include_dirs: [
+        "android",
+        "src",
+        "libcnary/include",
+    ],
+    export_include_dirs: ["include"],
+    cflags: [
+        "-DHAVE_CONFIG_H",
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-Wno-sign-compare",
+    ],
+    // Linked statically into the JNI library that hosts UxPlay.
+    sdk_version: "current",
+    stl: "none",
+}
